@@ -40,7 +40,7 @@
     -webkit-tap-highlight-color: transparent;
     z-index: 1;
   }
-  .desktop-icon .icon-wrap { padding: 2px; }
+  .desktop-icon .icon-wrap { padding: 2px; align-self: flex-start; margin-left: 35px; }
   .desktop-icon.selected .icon-wrap,
   .desktop-icon.selected .icon-label { background: #000080; }
   .desktop-icon .icon-label {
@@ -136,7 +136,7 @@
   }
 
   .start-menu {
-    position: fixed; bottom: 40px; left: 0; width: 190px;
+    position: fixed; bottom: 40px; left: 0; width: 280px;
     background: #c0c0c0;
     border-top: 2px solid #dfdfdf; border-left: 2px solid #dfdfdf;
     border-right: 2px solid #404040; border-bottom: 2px solid #404040;
@@ -213,11 +213,16 @@
 <div id="windows" style="position:relative;z-index:2;"></div>
 
 <div id="start-menu" class="start-menu">
-  <div class="sidebar"><span>Windows 95</span></div>
+  <div class="sidebar"><span>ziduflicks</span></div>
   <div class="menu-items">
-    <div class="menu-item">📁 Programs</div>
-    <div class="menu-item">📄 Documents</div>
-    <div class="menu-item">⚙️ Settings</div>
+    <div class="menu-item" onclick="window.open(PHOTOGRAPHY_URL, '_blank');closeStart();">📁 photography.zip</div>
+    <div class="menu-item" id="docsMenuItem" onclick="toggleDocs()">📄 Documents ▸</div>
+    <div id="docsSubmenu" style="display:none;">
+      <div class="menu-item" style="padding-left:24px" onclick="openVideo('v1');closeStart();">🎬 centralceealbumteaserparty.mp4</div>
+      <div class="menu-item" style="padding-left:24px" onclick="openVideo('v2');closeStart();">🎬 24hoursinnyc.mp4</div>
+      <div class="menu-item" style="padding-left:24px" onclick="openVideo('v3');closeStart();">🎬 sohosidequest.mp4</div>
+    </div>
+    <div class="menu-item" onclick="window.open('https://instagram.com/ziduflicks', '_blank');closeStart();">📸 Socials</div>
     <div class="menu-sep"></div>
     <div class="menu-item">🔌 Shut Down...</div>
   </div>
@@ -231,7 +236,7 @@
       <rect x="1" y="9" width="6" height="6" fill="#0000FF"/>
       <rect x="9" y="9" width="6" height="6" fill="#FFFF00"/>
     </svg>
-    Start
+    ziduflicks
   </button>
   <div class="taskbar-divider"></div>
   <div class="taskbar-items" id="taskbarItems"></div>
@@ -281,7 +286,6 @@ function renderDesktop() {
   VIDEOS.forEach(function(v, i) {
     var top = 20 + i * 80;
     var iconStyle = '';
-    if (v.id === 'v3') iconStyle = ' style="transform:translateX(-30px)"';
     var labelStyle = '';
     if (v.id === 'v3') labelStyle = ' style="transform:translateX(-10px)"';
     html += '<div class="desktop-icon" id="dicon-' + v.id + '" style="left:20px;top:' + top + 'px" ' +
@@ -343,7 +347,7 @@ function openVideo(videoId) {
     '<div class="progress-fill" id="progress-' + videoId + '"></div></div>' +
     '<div class="time-display" id="time-' + videoId + '">0:00 / 0:00</div>' +
     '<button class="win-btn" onclick="toggleFullscreen(\'' + videoId + '\')">⛶</button></div>' +
-    '<div class="status-bar">Ready</div></div>';
+    '</div>';
 
   document.getElementById('windows').insertAdjacentHTML('beforeend', h);
   openWindows[windowId] = { name: video.name };
@@ -429,7 +433,8 @@ function updateTaskbar() {
   c.innerHTML = html;
 }
 
-function toggleStart() { startOpen = !startOpen; document.getElementById('start-menu').classList.toggle('open', startOpen); }
+function toggleStart() { startOpen = !startOpen; document.getElementById('start-menu').classList.toggle('open', startOpen); if (!startOpen) { var ds = document.getElementById('docsSubmenu'); if (ds) ds.style.display = 'none'; } }
+function toggleDocs() { var ds = document.getElementById('docsSubmenu'); ds.style.display = ds.style.display === 'none' ? 'block' : 'none'; }
 function closeStart() { startOpen = false; document.getElementById('start-menu').classList.remove('open'); }
 
 document.body.addEventListener('mousedown', function(e) {
