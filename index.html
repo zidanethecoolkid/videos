@@ -7,7 +7,7 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body {
-    background: #008080;
+    background: #000;
     overflow: hidden;
     width: 100vw; height: 100vh; height: 100dvh;
     font-family: 'MS Sans Serif', 'Microsoft Sans Serif', Tahoma, Geneva, sans-serif;
@@ -38,6 +38,7 @@
     gap: 4px; padding: 6px;
     cursor: default;
     -webkit-tap-highlight-color: transparent;
+    z-index: 1;
   }
   .desktop-icon .icon-wrap { padding: 2px; }
   .desktop-icon.selected .icon-wrap,
@@ -182,8 +183,13 @@
 </head>
 <body>
 
-<div id="desktop"></div>
-<div id="windows"></div>
+<!-- BACKGROUND VIDEO — upload your MP4 to Cloudinary and paste the URL below -->
+<video id="bgVideo" autoplay muted loop playsinline webkit-playsinline poster="https://res.cloudinary.com/dbuxi5yul/video/upload/so_0/v1773077298/OUTPUT_24_qus5lz.jpg" style="position:fixed;top:0;left:0;width:100vw;height:100vh;height:100dvh;object-fit:cover;z-index:0;pointer-events:none;">
+  <source src="https://res.cloudinary.com/dbuxi5yul/video/upload/v1773077298/OUTPUT_24_qus5lz.mp4" type="video/mp4">
+</video>
+
+<div id="desktop" style="position:relative;z-index:1;"></div>
+<div id="windows" style="position:relative;z-index:2;"></div>
 
 <div id="start-menu" class="start-menu">
   <div class="sidebar"><span>Windows 95</span></div>
@@ -414,6 +420,17 @@ window.addEventListener('resize', function() {
 });
 
 renderDesktop();
+
+// Force background video to play
+var bgVid = document.getElementById('bgVideo');
+if (bgVid) {
+  bgVid.play().catch(function() {
+    document.addEventListener('click', function playOnce() {
+      bgVid.play();
+      document.removeEventListener('click', playOnce);
+    });
+  });
+}
 </script>
 </body>
 </html>
