@@ -187,6 +187,11 @@
 <video id="bgVideo" autoplay muted loop playsinline webkit-playsinline poster="https://res.cloudinary.com/dbuxi5yul/video/upload/so_0/v1773077298/OUTPUT_24_qus5lz.jpg" style="position:fixed;top:0;left:0;width:100vw;height:100vh;height:100dvh;object-fit:cover;z-index:0;pointer-events:none;">
   <source src="https://res.cloudinary.com/dbuxi5yul/video/upload/v1773077298/OUTPUT_24_qus5lz.mp4" type="video/mp4">
 </video>
+<style>
+  @media (max-width: 768px) {
+    #bgVideo { object-fit: contain !important; background: #000; }
+  }
+</style>
 
 <div id="desktop" style="position:relative;z-index:1;"></div>
 <div id="windows" style="position:relative;z-index:2;"></div>
@@ -289,7 +294,12 @@ function bringToFront(windowId) {
 
 function getWindowSize() {
   if (isMobile()) {
-    return { w: window.innerWidth - 4, h: (window.innerHeight || document.documentElement.clientHeight) - 48, x: 2, y: 2 };
+    var w = window.innerWidth - 8;
+    var videoH = Math.round(w * 9 / 16);
+    var totalH = videoH + 100;
+    var y = Math.round(((window.innerHeight || document.documentElement.clientHeight) - 48 - totalH) / 2);
+    if (y < 4) y = 4;
+    return { w: w, h: totalH, x: 4, y: y };
   }
   var n = Object.keys(openWindows).length;
   return { w: 660, h: 500, x: 140 + n * 25, y: 50 + n * 25 };
@@ -413,8 +423,9 @@ document.body.addEventListener('mousedown', function(e) {
 window.addEventListener('resize', function() {
   if (isMobile()) {
     document.querySelectorAll('.window').forEach(function(w) {
-      w.style.left='2px'; w.style.top='2px';
-      w.style.width=(window.innerWidth-4)+'px'; w.style.height=(window.innerHeight-48)+'px';
+      var sz = getWindowSize();
+      w.style.left = sz.x + 'px'; w.style.top = sz.y + 'px';
+      w.style.width = sz.w + 'px'; w.style.height = sz.h + 'px';
     });
   }
 });
