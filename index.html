@@ -183,15 +183,31 @@
 </head>
 <body>
 
-<!-- BACKGROUND VIDEO — upload your MP4 to Cloudinary and paste the URL below -->
-<video id="bgVideo" autoplay muted loop playsinline webkit-playsinline poster="https://res.cloudinary.com/dbuxi5yul/video/upload/so_0/v1773077298/OUTPUT_24_qus5lz.jpg" style="position:fixed;top:0;left:0;width:100vw;height:100vh;height:100dvh;object-fit:cover;z-index:0;pointer-events:none;">
+<!-- DESKTOP background video -->
+<video id="bgVideoDesktop" autoplay muted loop playsinline webkit-playsinline style="position:fixed;top:0;left:0;width:100vw;height:100vh;height:100dvh;object-fit:cover;z-index:0;pointer-events:none;">
   <source src="https://res.cloudinary.com/dbuxi5yul/video/upload/v1773077298/OUTPUT_24_qus5lz.mp4" type="video/mp4">
 </video>
-<style>
-  @media (max-width: 768px) {
-    #bgVideo { object-fit: contain !important; background: #000; }
+<!-- MOBILE background video -->
+<video id="bgVideoMobile" autoplay muted loop playsinline webkit-playsinline style="position:fixed;top:0;left:0;width:100vw;height:100vh;height:100dvh;object-fit:cover;z-index:0;pointer-events:none;display:none;">
+  <source src="https://res.cloudinary.com/dbuxi5yul/video/upload/v1773078239/OUTPUT_25_pf2lsa.mp4" type="video/mp4">
+</video>
+<script>
+(function(){
+  var desk = document.getElementById('bgVideoDesktop');
+  var mob = document.getElementById('bgVideoMobile');
+  function pickBg() {
+    if (window.innerWidth <= 768) {
+      desk.style.display = 'none'; desk.pause();
+      mob.style.display = 'block'; mob.play().catch(function(){});
+    } else {
+      mob.style.display = 'none'; mob.pause();
+      desk.style.display = 'block'; desk.play().catch(function(){});
+    }
   }
-</style>
+  pickBg();
+  window.addEventListener('resize', pickBg);
+})();
+</script>
 
 <div id="desktop" style="position:relative;z-index:1;"></div>
 <div id="windows" style="position:relative;z-index:2;"></div>
@@ -432,16 +448,14 @@ window.addEventListener('resize', function() {
 
 renderDesktop();
 
-// Force background video to play
-var bgVid = document.getElementById('bgVideo');
-if (bgVid) {
-  bgVid.play().catch(function() {
-    document.addEventListener('click', function playOnce() {
-      bgVid.play();
-      document.removeEventListener('click', playOnce);
-    });
-  });
-}
+// Force background videos to play
+document.addEventListener('click', function playOnce() {
+  var d = document.getElementById('bgVideoDesktop');
+  var m = document.getElementById('bgVideoMobile');
+  if (d) d.play().catch(function(){});
+  if (m) m.play().catch(function(){});
+  document.removeEventListener('click', playOnce);
+});
 </script>
 </body>
 </html>
