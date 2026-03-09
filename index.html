@@ -5,50 +5,37 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>My Desktop</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap');
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body {
     background: #008080;
     overflow: hidden;
-    width: 100vw;
-    height: 100vh;
-    height: 100dvh;
+    width: 100vw; height: 100vh; height: 100dvh;
     font-family: 'MS Sans Serif', 'Microsoft Sans Serif', Tahoma, Geneva, sans-serif;
     font-size: 11px;
-    user-select: none;
-    -webkit-user-select: none;
+    user-select: none; -webkit-user-select: none;
     cursor: default;
     touch-action: none;
     overscroll-behavior: none;
   }
 
+  /* ============================================
+     CUSTOMIZE YOUR BACKGROUND HERE
+     Options:
+       Solid color:  background: #008080;
+       Dark:         background: #0a0a0a;
+       Image:        background: url('https://your-image.jpg') center/cover no-repeat;
+     ============================================ */
+
   body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 99999;
+    content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 99999;
     background: repeating-linear-gradient(0deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 1px, transparent 1px, transparent 3px);
     mix-blend-mode: multiply;
   }
 
-  ::-webkit-scrollbar { width: 16px; height: 16px; }
-  ::-webkit-scrollbar-track { background: #c0c0c0; border: 1px solid #808080; }
-  ::-webkit-scrollbar-thumb {
-    background: #c0c0c0;
-    border-top: 2px solid #dfdfdf; border-left: 2px solid #dfdfdf;
-    border-right: 2px solid #404040; border-bottom: 2px solid #404040;
-  }
-
   .desktop-icon {
     position: absolute;
-    width: 75px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-    padding: 4px;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 4px; padding: 6px;
     cursor: default;
     -webkit-tap-highlight-color: transparent;
   }
@@ -56,20 +43,15 @@
   .desktop-icon.selected .icon-wrap,
   .desktop-icon.selected .icon-label { background: #000080; }
   .desktop-icon .icon-label {
-    color: white;
-    text-align: center;
-    line-height: 14px;
-    padding: 0 2px;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
-    word-break: break-word;
-    font-size: 11px;
+    color: white; text-align: center; line-height: 16px;
+    padding: 2px 4px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+    white-space: nowrap; font-size: 11px;
   }
   .desktop-icon.selected .icon-label { text-shadow: none; }
 
   .window {
-    position: fixed;
-    display: flex;
-    flex-direction: column;
+    position: fixed; display: flex; flex-direction: column;
     background: #c0c0c0;
     border-top: 2px solid #dfdfdf; border-left: 2px solid #dfdfdf;
     border-right: 2px solid #404040; border-bottom: 2px solid #404040;
@@ -78,135 +60,32 @@
 
   .title-bar {
     background: linear-gradient(90deg, #000080, #1084d0);
-    padding: 3px 4px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    flex-shrink: 0;
-    min-height: 28px;
-    position: relative;
+    padding: 3px 4px; display: flex; align-items: center; gap: 4px;
+    flex-shrink: 0; min-height: 28px; position: relative;
   }
   .title-bar .title-text {
-    color: white;
-    font-weight: bold;
-    font-size: 11px;
-    flex: 1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    color: white; font-weight: bold; font-size: 11px; flex: 1;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
 
   .win-btn {
-    background: #c0c0c0;
-    border: none;
+    background: #c0c0c0; border: none;
     border-top: 1px solid #fff; border-left: 1px solid #fff;
     border-right: 1px solid #404040; border-bottom: 1px solid #404040;
-    padding: 1px;
-    cursor: pointer;
+    padding: 1px; cursor: pointer;
     min-width: 16px; min-height: 14px;
     display: flex; align-items: center; justify-content: center;
-    outline: none;
-    font-size: 10px;
-    line-height: 1;
+    outline: none; font-size: 10px; line-height: 1;
     -webkit-tap-highlight-color: transparent;
   }
   .win-btn:active {
     border-top: 1px solid #404040; border-left: 1px solid #404040;
     border-right: 1px solid #fff; border-bottom: 1px solid #fff;
   }
-
   .close-btn { min-width: 28px; min-height: 24px; font-size: 14px; }
 
-  .menu-bar {
-    display: flex;
-    padding: 1px 0;
-    border-bottom: 1px solid #808080;
-    flex-shrink: 0;
-  }
-  .menu-bar span { padding: 2px 8px; font-size: 11px; }
-
-  .address-bar {
-    display: flex;
-    align-items: center;
-    padding: 2px 4px;
-    gap: 4px;
-    border-bottom: 1px solid #808080;
-    flex-shrink: 0;
-    font-size: 11px;
-  }
-  .address-bar .addr-input {
-    flex: 1;
-    background: white;
-    border: 1px solid #808080;
-    border-right-color: #dfdfdf; border-bottom-color: #dfdfdf;
-    padding: 1px 4px;
-    font-family: inherit;
-    font-size: 11px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .window-content {
-    flex: 1;
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-    background: white;
-    margin: 2px;
-    border-top: 1px solid #808080; border-left: 1px solid #808080;
-    border-right: 1px solid #dfdfdf; border-bottom: 1px solid #dfdfdf;
-    touch-action: pan-y;
-  }
-
-  .status-bar {
-    padding: 2px 6px;
-    font-size: 11px;
-    border-top: 1px solid #808080;
-    color: #404040;
-    flex-shrink: 0;
-  }
-
-  .file-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 86px);
-    gap: 8px;
-    padding: 12px;
-    align-content: start;
-  }
-
-  .file-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-    padding: 6px;
-    cursor: default;
-    border-radius: 2px;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .file-item:active, .file-item:hover { background: rgba(0,0,128,0.1); }
-  .file-item:active .file-label, .file-item:hover .file-label { background: #000080; color: white; }
-  .file-item .thumb {
-    width: 48px; height: 48px;
-    background: #000;
-    border: 1px solid #808080;
-    display: flex; align-items: center; justify-content: center;
-    overflow: hidden;
-  }
-  .file-item .thumb svg { width: 32px; height: 32px; }
-  .file-item .file-label {
-    font-size: 11px;
-    text-align: center;
-    line-height: 13px;
-    word-break: break-all;
-    max-width: 80px;
-    padding: 0 2px;
-  }
-
   .player-area {
-    flex: 1;
-    background: #000;
-    margin: 2px;
+    flex: 1; background: #000; margin: 2px;
     border-top: 1px solid #808080; border-left: 1px solid #808080;
     border-right: 1px solid #dfdfdf; border-bottom: 1px solid #dfdfdf;
     display: flex; align-items: center; justify-content: center;
@@ -225,6 +104,7 @@
   }
   .progress-fill { height: 100%; background: #000080; width: 0%; pointer-events: none; }
   .time-display { font-size: 11px; min-width: 75px; text-align: center; font-variant-numeric: tabular-nums; }
+  .status-bar { padding: 2px 6px; font-size: 11px; border-top: 1px solid #808080; color: #404040; flex-shrink: 0; }
 
   .taskbar {
     position: fixed; bottom: 0; left: 0; right: 0; height: 40px;
@@ -259,9 +139,8 @@
     background: #c0c0c0;
     border-top: 2px solid #dfdfdf; border-left: 2px solid #dfdfdf;
     border-right: 2px solid #404040; border-bottom: 2px solid #404040;
-    z-index: 10000;
+    z-index: 10000; display: none;
     box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 #808080;
-    display: none;
   }
   .start-menu.open { display: block; }
   .start-menu .sidebar {
@@ -275,7 +154,7 @@
   }
   .start-menu .menu-items { margin-left: 24px; padding: 2px 0; }
   .start-menu .menu-item {
-    padding: 8px 8px; display: flex; align-items: center; gap: 8px; font-size: 11px;
+    padding: 8px; display: flex; align-items: center; gap: 8px; font-size: 11px;
     -webkit-tap-highlight-color: transparent;
   }
   .start-menu .menu-item:hover, .start-menu .menu-item:active { background: #000080; color: white; }
@@ -284,29 +163,18 @@
   .drag-handle { display: none; }
 
   @media (max-width: 768px) {
-    .desktop-icon { width: 82px; }
-    .desktop-icon .icon-wrap svg { width: 42px; height: 42px; }
-    .desktop-icon .icon-label { font-size: 12px; line-height: 15px; }
-    .file-grid { grid-template-columns: repeat(auto-fill, 92px); gap: 10px; padding: 10px; }
-    .file-item { padding: 8px; }
-    .file-item .thumb { width: 56px; height: 56px; }
-    .file-item .thumb svg { width: 38px; height: 38px; }
-    .file-item .file-label { font-size: 12px; max-width: 88px; }
+    .desktop-icon .icon-wrap svg { width: 44px; height: 44px; }
+    .desktop-icon .icon-label { font-size: 12px; }
     .title-bar { min-height: 38px; padding: 4px 6px; }
     .title-bar .title-text { font-size: 13px; }
     .close-btn { min-width: 38px; min-height: 32px; font-size: 18px; }
-    .menu-bar { display: none; }
-    .address-bar { font-size: 10px; }
     .player-controls .win-btn { min-width: 40px; min-height: 34px; font-size: 16px; }
     .progress-track { height: 22px; }
     .time-display { font-size: 10px; min-width: 65px; }
     .drag-handle {
-      display: block;
-      width: 40px; height: 4px;
-      background: rgba(255,255,255,0.4);
-      border-radius: 2px;
-      position: absolute;
-      top: 3px; left: 50%; transform: translateX(-50%);
+      display: block; width: 40px; height: 4px;
+      background: rgba(255,255,255,0.4); border-radius: 2px;
+      position: absolute; top: 3px; left: 50%; transform: translateX(-50%);
       pointer-events: none;
     }
   }
@@ -316,14 +184,13 @@
 
 <div id="desktop"></div>
 <div id="windows"></div>
+
 <div id="start-menu" class="start-menu">
   <div class="sidebar"><span>Windows 95</span></div>
   <div class="menu-items">
     <div class="menu-item">📁 Programs</div>
     <div class="menu-item">📄 Documents</div>
     <div class="menu-item">⚙️ Settings</div>
-    <div class="menu-item">🔍 Find</div>
-    <div class="menu-item">❓ Help</div>
     <div class="menu-sep"></div>
     <div class="menu-item">🔌 Shut Down...</div>
   </div>
@@ -341,110 +208,71 @@
   </button>
   <div class="taskbar-divider"></div>
   <div class="taskbar-items" id="taskbarItems"></div>
-  <div class="systray">
-    🔊
-    <span id="clock"></span>
-  </div>
+  <div class="systray">🔊 <span id="clock"></span></div>
 </div>
 
 <script>
 // =====================================================
-// CONFIGURATION — EDIT YOUR FOLDERS AND VIDEOS HERE
+//  CUSTOMIZE HERE
 // =====================================================
-const FOLDERS = [
-  {
-    id: "folder1",
-    name: "Visuals",
-    videos: [
-      { id: "v1", name: "clip_001.mp4", url: "https://www.w3schools.com/html/mov_bbb.mp4" },
-      { id: "v2", name: "clip_002.mp4", url: "https://www.w3schools.com/html/movie.mp4" },
-      { id: "v3", name: "clip_003.mp4", url: "https://www.w3schools.com/html/mov_bbb.mp4" },
-    ]
-  },
-  {
-    id: "folder2",
-    name: "Projects",
-    videos: [
-      { id: "v4", name: "proj_001.mp4", url: "https://www.w3schools.com/html/movie.mp4" },
-      { id: "v5", name: "proj_002.mp4", url: "https://www.w3schools.com/html/mov_bbb.mp4" },
-    ]
-  },
-  {
-    id: "folder3",
-    name: "Unreleased",
-    videos: [
-      { id: "v6", name: "unreleased_001.mp4", url: "https://www.w3schools.com/html/movie.mp4" },
-      { id: "v7", name: "unreleased_002.mp4", url: "https://www.w3schools.com/html/mov_bbb.mp4" },
-      { id: "v8", name: "unreleased_003.mp4", url: "https://www.w3schools.com/html/movie.mp4" },
-      { id: "v9", name: "unreleased_004.mp4", url: "https://www.w3schools.com/html/mov_bbb.mp4" },
-    ]
-  },
-  {
-    id: "folder4",
-    name: "BTS",
-    videos: [
-      { id: "v10", name: "bts_001.mp4", url: "https://www.w3schools.com/html/movie.mp4" },
-      { id: "v11", name: "bts_002.mp4", url: "https://www.w3schools.com/html/mov_bbb.mp4" },
-    ]
-  },
+
+// YOUR 3 VIDEOS — change names and URLs
+var VIDEOS = [
+  { id: "v1", name: "sohosidequest.mp4", url: "https://www.w3schools.com/html/mov_bbb.mp4" },
+  { id: "v2", name: "24hoursinnyc.mp4", url: "https://www.w3schools.com/html/movie.mp4" },
+  { id: "v3", name: "centralceealbumteaserparty.mp4", url: "https://www.w3schools.com/html/mov_bbb.mp4" },
 ];
 
-// =====================================================
-// ENGINE
-// =====================================================
-let zCounter = 100;
-let activeWindowId = null;
-let openWindows = {};
-let startOpen = false;
-const isMobile = () => window.innerWidth <= 768;
+// YOUR PHOTOGRAPHY SITE URL — where the photography.zip icon links to
+var PHOTOGRAPHY_URL = "https://your-photography-site.vercel.app";
 
-const folderSVG = '<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M2 8H14L16 5H30V27H2V8Z" fill="#FFDE00" stroke="#808000" stroke-width="1"/><path d="M2 10H30V27H2V10Z" fill="#FFC800" stroke="#808000" stroke-width="1"/><path d="M3 11H29V26H3V11Z" fill="#FFDE00"/></svg>';
-const videoSVG = '<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="3" y="6" width="26" height="20" rx="1" fill="#c0c0c0" stroke="#404040"/><rect x="5" y="8" width="22" height="14" fill="#000080"/><polygon points="14,11 14,19 21,15" fill="white"/><rect x="5" y="23" width="22" height="2" fill="#808080"/></svg>';
-const computerSVG = '<svg width="32" height="32" viewBox="0 0 32 32"><rect x="3" y="4" width="26" height="18" rx="1" fill="#c0c0c0" stroke="#404040"/><rect x="5" y="6" width="22" height="14" fill="#000080"/><rect x="10" y="23" width="12" height="2" fill="#c0c0c0" stroke="#404040" stroke-width="0.5"/><rect x="7" y="25" width="18" height="3" rx="1" fill="#c0c0c0" stroke="#404040" stroke-width="0.5"/></svg>';
-const recycleSVG = '<svg width="32" height="32" viewBox="0 0 32 32"><path d="M8 10H24L22 28H10L8 10Z" fill="#c0c0c0" stroke="#404040"/><rect x="11" y="6" width="10" height="4" fill="#c0c0c0" stroke="#404040"/><rect x="6" y="9" width="20" height="2" fill="#c0c0c0" stroke="#404040"/><line x1="13" y1="13" x2="13" y2="25" stroke="#808080"/><line x1="16" y1="13" x2="16" y2="25" stroke="#808080"/><line x1="19" y1="13" x2="19" y2="25" stroke="#808080"/></svg>';
+// =====================================================
+//  ENGINE — no need to edit below
+// =====================================================
+var zCounter = 100;
+var activeWindowId = null;
+var openWindows = {};
+var startOpen = false;
+var isMobile = function() { return window.innerWidth <= 768; };
 
-// Clock
+var videoSVG = '<svg width="40" height="40" viewBox="0 0 32 32" fill="none"><rect x="3" y="6" width="26" height="20" rx="1" fill="#c0c0c0" stroke="#404040"/><rect x="5" y="8" width="22" height="14" fill="#000080"/><polygon points="14,11 14,19 21,15" fill="white"/><rect x="5" y="23" width="22" height="2" fill="#808080"/></svg>';
+var zipSVG = '<svg width="40" height="40" viewBox="0 0 32 32" fill="none"><rect x="6" y="3" width="20" height="26" rx="1" fill="#ffffc0" stroke="#808000"/><rect x="14" y="3" width="4" height="2" fill="#808000"/><rect x="14" y="7" width="4" height="2" fill="#808000"/><rect x="14" y="11" width="4" height="2" fill="#808000"/><rect x="14" y="15" width="4" height="2" fill="#808000"/><rect x="12" y="19" width="8" height="6" rx="1" fill="#808000"/><rect x="14" y="20" width="4" height="3" fill="#ffffc0"/></svg>';
+var computerSVG = '<svg width="32" height="32" viewBox="0 0 32 32"><rect x="3" y="4" width="26" height="18" rx="1" fill="#c0c0c0" stroke="#404040"/><rect x="5" y="6" width="22" height="14" fill="#000080"/><rect x="10" y="23" width="12" height="2" fill="#c0c0c0" stroke="#404040" stroke-width="0.5"/><rect x="7" y="25" width="18" height="3" rx="1" fill="#c0c0c0" stroke="#404040" stroke-width="0.5"/></svg>';
+var recycleSVG = '<svg width="32" height="32" viewBox="0 0 32 32"><path d="M8 10H24L22 28H10L8 10Z" fill="#c0c0c0" stroke="#404040"/><rect x="11" y="6" width="10" height="4" fill="#c0c0c0" stroke="#404040"/><rect x="6" y="9" width="20" height="2" fill="#c0c0c0" stroke="#404040"/><line x1="13" y1="13" x2="13" y2="25" stroke="#808080"/><line x1="16" y1="13" x2="16" y2="25" stroke="#808080"/><line x1="19" y1="13" x2="19" y2="25" stroke="#808080"/></svg>';
+
 function updateClock() {
-  const now = new Date();
+  var now = new Date();
   document.getElementById('clock').textContent = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
 }
-updateClock();
-setInterval(updateClock, 30000);
-
-// Desktop icons — single tap opens on mobile
-function handleIconTap(folderId) {
-  closeStart();
-  document.querySelectorAll('.desktop-icon').forEach(el => el.classList.remove('selected'));
-  const el = document.getElementById('dicon-' + folderId);
-  if (el) el.classList.add('selected');
-  if (isMobile()) {
-    openFolder(folderId);
-  }
-}
+updateClock(); setInterval(updateClock, 30000);
 
 function renderDesktop() {
-  const desktop = document.getElementById('desktop');
-  let html = '';
-  FOLDERS.forEach((folder, i) => {
-    const top = 16 + i * 94;
-    html += '<div class="desktop-icon" id="dicon-' + folder.id + '" style="left:20px;top:' + top + 'px" onmousedown="event.stopPropagation()" ontouchend="event.preventDefault();handleIconTap(\'' + folder.id + '\')" ondblclick="openFolder(\'' + folder.id + '\')">' +
-      '<div class="icon-wrap">' + folderSVG + '</div>' +
-      '<div class="icon-label">' + folder.name + '</div></div>';
+  var desktop = document.getElementById('desktop');
+  var html = '';
+
+  // Video icons on the left
+  VIDEOS.forEach(function(v, i) {
+    var top = 20 + i * 80;
+    var iconStyle = '';
+    if (v.id === 'v3') iconStyle = ' style="transform:translateX(-30px)"';
+    var labelStyle = '';
+    if (v.id === 'v3') labelStyle = ' style="transform:translateX(-10px)"';
+    html += '<div class="desktop-icon" id="dicon-' + v.id + '" style="left:20px;top:' + top + 'px" ' +
+      'ondblclick="openVideo(\'' + v.id + '\')" ontouchend="event.preventDefault();openVideo(\'' + v.id + '\')">' +
+      '<div class="icon-wrap"' + iconStyle + '>' + videoSVG + '</div>' +
+      '<div class="icon-label"' + labelStyle + '>' + v.name + '</div></div>';
   });
 
-  html += '<div class="desktop-icon" style="right:20px;left:auto;top:16px"><div class="icon-wrap">' + computerSVG + '</div><div class="icon-label">My Computer</div></div>';
-  html += '<div class="desktop-icon" style="right:20px;left:auto;top:110px"><div class="icon-wrap">' + recycleSVG + '</div><div class="icon-label">Recycle Bin</div></div>';
+  // photography.zip icon
+  var zipTop = 20 + VIDEOS.length * 80;
+  html += '<div class="desktop-icon" style="left:20px;top:' + zipTop + 'px" ' +
+    'ondblclick="window.open(PHOTOGRAPHY_URL, \'_blank\')" ontouchend="event.preventDefault();window.open(PHOTOGRAPHY_URL, \'_blank\')">' +
+    '<div class="icon-wrap">' + zipSVG + '</div>' +
+    '<div class="icon-label">photography.zip</div></div>';
+
   desktop.innerHTML = html;
 }
 
-document.body.addEventListener('mousedown', function(e) {
-  if (!e.target.closest('.desktop-icon') && !e.target.closest('.start-menu') && !e.target.closest('#startBtn')) {
-    document.querySelectorAll('.desktop-icon').forEach(function(el) { el.classList.remove('selected'); });
-    closeStart();
-  }
-});
-
-// Windows
 function bringToFront(windowId) {
   zCounter++;
   var el = document.getElementById(windowId);
@@ -453,54 +281,23 @@ function bringToFront(windowId) {
   updateTaskbar();
 }
 
-function getWindowSize(type) {
+function getWindowSize() {
   if (isMobile()) {
     return { w: window.innerWidth - 4, h: (window.innerHeight || document.documentElement.clientHeight) - 48, x: 2, y: 2 };
   }
-  var offsetIdx = Object.keys(openWindows).length;
-  if (type === 'video') return { w: 660, h: 500, x: 180 + offsetIdx * 25, y: 70 + offsetIdx * 25 };
-  return { w: 520, h: 380, x: 140 + offsetIdx * 30, y: 50 + offsetIdx * 30 };
+  var n = Object.keys(openWindows).length;
+  return { w: 660, h: 500, x: 140 + n * 25, y: 50 + n * 25 };
 }
 
-function openFolder(folderId) {
-  var windowId = 'win-' + folderId;
+function openVideo(videoId) {
+  var windowId = 'win-' + videoId;
   if (openWindows[windowId]) { bringToFront(windowId); return; }
-  var folder = FOLDERS.find(function(f) { return f.id === folderId; });
-  if (!folder) return;
-  var sz = getWindowSize('folder');
-  var vhtml = '';
-  folder.videos.forEach(function(v) {
-    vhtml += '<div class="file-item" ondblclick="openVideo(\'' + v.id + '\', \'' + folderId + '\')" ontouchend="event.preventDefault();openVideo(\'' + v.id + '\', \'' + folderId + '\')">' +
-      '<div class="thumb">' + videoSVG + '</div><div class="file-label">' + v.name + '</div></div>';
-  });
-
-  var winHTML = '<div class="window" id="' + windowId + '" style="left:' + sz.x + 'px;top:' + sz.y + 'px;width:' + sz.w + 'px;height:' + sz.h + 'px;z-index:' + (++zCounter) + '" onmousedown="bringToFront(\'' + windowId + '\')">' +
-    '<div class="title-bar" onmousedown="startDrag(event, \'' + windowId + '\')" ontouchstart="startDragTouch(event, \'' + windowId + '\')">' +
-    '<div class="drag-handle"></div>' + folderSVG +
-    '<span class="title-text">' + folder.name + '</span>' +
-    '<div style="display:flex;gap:2px" onmousedown="event.stopPropagation()" ontouchstart="event.stopPropagation()">' +
-    '<button class="win-btn close-btn" onclick="closeWindow(\'' + windowId + '\')" ontouchend="event.preventDefault();closeWindow(\'' + windowId + '\')">✕</button></div></div>' +
-    '<div class="menu-bar"><span>File</span><span>Edit</span><span>View</span><span>Help</span></div>' +
-    '<div class="address-bar"><span>Address:</span><div class="addr-input">C:\\My Documents\\' + folder.name + '</div></div>' +
-    '<div class="window-content"><div class="file-grid">' + vhtml + '</div></div>' +
-    '<div class="status-bar">' + folder.videos.length + ' object(s)</div></div>';
-
-  document.getElementById('windows').insertAdjacentHTML('beforeend', winHTML);
-  openWindows[windowId] = { type: 'folder', name: folder.name };
-  bringToFront(windowId);
-  updateTaskbar();
-}
-
-function openVideo(videoId, folderId) {
-  var windowId = 'win-video-' + videoId;
-  if (openWindows[windowId]) { bringToFront(windowId); return; }
-  var folder = FOLDERS.find(function(f) { return f.id === folderId; });
-  var video = folder && folder.videos.find(function(v) { return v.id === videoId; });
+  var video = VIDEOS.find(function(v) { return v.id === videoId; });
   if (!video) return;
-  var sz = getWindowSize('video');
+  var sz = getWindowSize();
 
-  var winHTML = '<div class="window" id="' + windowId + '" style="left:' + sz.x + 'px;top:' + sz.y + 'px;width:' + sz.w + 'px;height:' + sz.h + 'px;z-index:' + (++zCounter) + '" onmousedown="bringToFront(\'' + windowId + '\')">' +
-    '<div class="title-bar" onmousedown="startDrag(event, \'' + windowId + '\')" ontouchstart="startDragTouch(event, \'' + windowId + '\')">' +
+  var h = '<div class="window" id="' + windowId + '" style="left:' + sz.x + 'px;top:' + sz.y + 'px;width:' + sz.w + 'px;height:' + sz.h + 'px;z-index:' + (++zCounter) + '" onmousedown="bringToFront(\'' + windowId + '\')">' +
+    '<div class="title-bar" onmousedown="startDrag(event,\'' + windowId + '\')" ontouchstart="startDragTouch(event,\'' + windowId + '\')">' +
     '<div class="drag-handle"></div>' + videoSVG +
     '<span class="title-text">' + video.name + ' — Media Player</span>' +
     '<div style="display:flex;gap:2px" onmousedown="event.stopPropagation()" ontouchstart="event.stopPropagation()">' +
@@ -510,14 +307,14 @@ function openVideo(videoId, folderId) {
     '<button class="win-btn" onclick="playVideo(\'' + videoId + '\')">▶</button>' +
     '<button class="win-btn" onclick="pauseVideo(\'' + videoId + '\')">⏸</button>' +
     '<button class="win-btn" onclick="stopVideo(\'' + videoId + '\')">⏹</button>' +
-    '<div class="progress-track" id="track-' + videoId + '" onclick="seekVideo(event, \'' + videoId + '\')" ontouchstart="seekVideoTouch(event, \'' + videoId + '\')">' +
+    '<div class="progress-track" id="track-' + videoId + '" onclick="seekVideo(event,\'' + videoId + '\')" ontouchstart="seekVideoTouch(event,\'' + videoId + '\')">' +
     '<div class="progress-fill" id="progress-' + videoId + '"></div></div>' +
     '<div class="time-display" id="time-' + videoId + '">0:00 / 0:00</div>' +
     '<button class="win-btn" onclick="toggleFullscreen(\'' + videoId + '\')">⛶</button></div>' +
     '<div class="status-bar">Ready</div></div>';
 
-  document.getElementById('windows').insertAdjacentHTML('beforeend', winHTML);
-  openWindows[windowId] = { type: 'video', name: video.name };
+  document.getElementById('windows').insertAdjacentHTML('beforeend', h);
+  openWindows[windowId] = { name: video.name };
   bringToFront(windowId);
   updateTaskbar();
 }
@@ -526,12 +323,11 @@ function closeWindow(windowId) {
   var el = document.getElementById(windowId);
   if (el) el.remove();
   delete openWindows[windowId];
-  var vidMatch = windowId.match(/win-video-(.*)/);
-  if (vidMatch) { var vid = document.getElementById('vid-' + vidMatch[1]); if (vid) vid.pause(); }
+  var m = windowId.match(/win-(.*)/);
+  if (m) { var vid = document.getElementById('vid-' + m[1]); if (vid) vid.pause(); }
   updateTaskbar();
 }
 
-// Video controls
 function playVideo(id) { var v = document.getElementById('vid-' + id); if (v) v.play(); }
 function pauseVideo(id) { var v = document.getElementById('vid-' + id); if (v) v.pause(); }
 function stopVideo(id) { var v = document.getElementById('vid-' + id); if (v) { v.pause(); v.currentTime = 0; } }
@@ -539,48 +335,31 @@ function toggleFullscreen(id) {
   var v = document.getElementById('vid-' + id);
   if (v) { if (v.requestFullscreen) v.requestFullscreen(); else if (v.webkitRequestFullscreen) v.webkitRequestFullscreen(); else if (v.webkitEnterFullscreen) v.webkitEnterFullscreen(); }
 }
-function formatTime(s) {
-  if (isNaN(s)) return '0:00';
-  return Math.floor(s / 60) + ':' + (Math.floor(s % 60) < 10 ? '0' : '') + Math.floor(s % 60);
-}
+function formatTime(s) { if (isNaN(s)) return '0:00'; return Math.floor(s/60) + ':' + (Math.floor(s%60)<10?'0':'') + Math.floor(s%60); }
 function updateProgress(id) {
   var v = document.getElementById('vid-' + id);
   var fill = document.getElementById('progress-' + id);
-  var timeEl = document.getElementById('time-' + id);
-  if (v && fill) fill.style.width = (v.duration ? (v.currentTime / v.duration) * 100 : 0) + '%';
-  if (v && timeEl) timeEl.textContent = formatTime(v.currentTime) + ' / ' + formatTime(v.duration);
+  var t = document.getElementById('time-' + id);
+  if (v && fill) fill.style.width = (v.duration ? (v.currentTime/v.duration)*100 : 0) + '%';
+  if (v && t) t.textContent = formatTime(v.currentTime) + ' / ' + formatTime(v.duration);
 }
 function seekVideo(e, id) {
-  var track = document.getElementById('track-' + id);
-  var v = document.getElementById('vid-' + id);
-  if (track && v && v.duration) {
-    var rect = track.getBoundingClientRect();
-    v.currentTime = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width)) * v.duration;
-  }
+  var track = document.getElementById('track-' + id); var v = document.getElementById('vid-' + id);
+  if (track && v && v.duration) { var r = track.getBoundingClientRect(); v.currentTime = Math.max(0,Math.min(1,(e.clientX-r.left)/r.width)) * v.duration; }
 }
 function seekVideoTouch(e, id) {
   var touch = e.touches[0]; if (!touch) return;
-  var track = document.getElementById('track-' + id);
-  var v = document.getElementById('vid-' + id);
-  if (track && v && v.duration) {
-    var rect = track.getBoundingClientRect();
-    v.currentTime = Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width)) * v.duration;
-  }
+  var track = document.getElementById('track-' + id); var v = document.getElementById('vid-' + id);
+  if (track && v && v.duration) { var r = track.getBoundingClientRect(); v.currentTime = Math.max(0,Math.min(1,(touch.clientX-r.left)/r.width)) * v.duration; }
 }
-function onVideoEnd(id) { var fill = document.getElementById('progress-' + id); if (fill) fill.style.width = '100%'; }
+function onVideoEnd(id) { var f = document.getElementById('progress-' + id); if (f) f.style.width = '100%'; }
 
-// ============================================
-// DRAG — Mouse + Touch with 8px threshold
-// ============================================
+// Drag
 var dragState = null;
-
-function startDrag(e, windowId) {
+function startDrag(e, wid) {
   if (e.target.closest('button')) return;
-  bringToFront(windowId);
-  var el = document.getElementById(windowId);
-  var rect = el.getBoundingClientRect();
-  dragState = { windowId: windowId, offsetX: e.clientX - rect.left, offsetY: e.clientY - rect.top };
-  e.preventDefault();
+  bringToFront(wid); var el = document.getElementById(wid); var r = el.getBoundingClientRect();
+  dragState = { windowId: wid, offsetX: e.clientX - r.left, offsetY: e.clientY - r.top }; e.preventDefault();
 }
 document.addEventListener('mousemove', function(e) {
   if (!dragState || dragState.isTouch) return;
@@ -589,67 +368,47 @@ document.addEventListener('mousemove', function(e) {
 });
 document.addEventListener('mouseup', function() { if (dragState && !dragState.isTouch) dragState = null; });
 
-function startDragTouch(e, windowId) {
+function startDragTouch(e, wid) {
   if (e.target.closest('button')) return;
-  bringToFront(windowId);
-  var touch = e.touches[0]; if (!touch) return;
-  var el = document.getElementById(windowId);
-  var rect = el.getBoundingClientRect();
-  dragState = {
-    windowId: windowId,
-    offsetX: touch.clientX - rect.left,
-    offsetY: touch.clientY - rect.top,
-    isTouch: true,
-    startX: touch.clientX,
-    startY: touch.clientY,
-    moved: false
-  };
+  bringToFront(wid); var touch = e.touches[0]; if (!touch) return;
+  var el = document.getElementById(wid); var r = el.getBoundingClientRect();
+  dragState = { windowId: wid, offsetX: touch.clientX - r.left, offsetY: touch.clientY - r.top, isTouch: true, startX: touch.clientX, startY: touch.clientY, moved: false };
 }
-
 document.addEventListener('touchmove', function(e) {
   if (!dragState || !dragState.isTouch) return;
   var touch = e.touches[0]; if (!touch) return;
-  var dx = Math.abs(touch.clientX - dragState.startX);
-  var dy = Math.abs(touch.clientY - dragState.startY);
-  if (!dragState.moved && dx < 8 && dy < 8) return;
-  dragState.moved = true;
-  e.preventDefault();
+  if (!dragState.moved && Math.abs(touch.clientX-dragState.startX)<8 && Math.abs(touch.clientY-dragState.startY)<8) return;
+  dragState.moved = true; e.preventDefault();
   var el = document.getElementById(dragState.windowId);
   if (el) {
-    var newX = touch.clientX - dragState.offsetX;
-    var newY = touch.clientY - dragState.offsetY;
-    newY = Math.max(-10, Math.min(newY, window.innerHeight - 60));
-    newX = Math.max(-el.offsetWidth + 60, Math.min(newX, window.innerWidth - 60));
-    el.style.left = newX + 'px';
-    el.style.top = newY + 'px';
+    var nx = touch.clientX - dragState.offsetX, ny = touch.clientY - dragState.offsetY;
+    ny = Math.max(-10, Math.min(ny, window.innerHeight-60));
+    nx = Math.max(-el.offsetWidth+60, Math.min(nx, window.innerWidth-60));
+    el.style.left = nx+'px'; el.style.top = ny+'px';
   }
 }, { passive: false });
-
 document.addEventListener('touchend', function() { dragState = null; });
 
-// Taskbar
 function updateTaskbar() {
-  var container = document.getElementById('taskbarItems');
-  var html = '';
+  var c = document.getElementById('taskbarItems'); var html = '';
   for (var id in openWindows) {
-    var win = openWindows[id];
-    var isActive = id === activeWindowId;
-    var icon = win.type === 'folder' ? '📁' : '🎬';
-    html += '<button class="win-btn taskbar-item ' + (isActive ? 'active' : '') + '" onclick="bringToFront(\'' + id + '\')">' + icon + ' ' + win.name + '</button>';
+    html += '<button class="win-btn taskbar-item ' + (id===activeWindowId?'active':'') + '" onclick="bringToFront(\'' + id + '\')">🎬 ' + openWindows[id].name + '</button>';
   }
-  container.innerHTML = html;
+  c.innerHTML = html;
 }
 
 function toggleStart() { startOpen = !startOpen; document.getElementById('start-menu').classList.toggle('open', startOpen); }
 function closeStart() { startOpen = false; document.getElementById('start-menu').classList.remove('open'); }
 
-// Resize handler — refit windows on mobile
+document.body.addEventListener('mousedown', function(e) {
+  if (!e.target.closest('.desktop-icon') && !e.target.closest('.start-menu') && !e.target.closest('#startBtn')) closeStart();
+});
+
 window.addEventListener('resize', function() {
   if (isMobile()) {
-    document.querySelectorAll('.window').forEach(function(win) {
-      win.style.left = '2px'; win.style.top = '2px';
-      win.style.width = (window.innerWidth - 4) + 'px';
-      win.style.height = (window.innerHeight - 48) + 'px';
+    document.querySelectorAll('.window').forEach(function(w) {
+      w.style.left='2px'; w.style.top='2px';
+      w.style.width=(window.innerWidth-4)+'px'; w.style.height=(window.innerHeight-48)+'px';
     });
   }
 });
