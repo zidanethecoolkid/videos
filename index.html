@@ -302,15 +302,17 @@ function renderDesktop() {
     var labelStyle = '';
     if (v.id === 'v3') labelStyle = ' style="transform:translateX(-10px)"';
     html += '<div class="desktop-icon" id="dicon-' + v.id + '" style="left:20px;top:' + top + 'px" ' +
-      'ondblclick="openVideo(\'' + v.id + '\')" ontouchend="event.preventDefault();openVideo(\'' + v.id + '\')">' +
+      'onmousedown="startIconDrag(event, \'dicon-' + v.id + '\', function(){openVideo(\'' + v.id + '\')})" ' +
+      'ontouchstart="startIconDragTouch(event, \'dicon-' + v.id + '\', function(){openVideo(\'' + v.id + '\')})">' +
       '<div class="icon-wrap"' + iconStyle + '>' + videoSVG + '</div>' +
       '<div class="icon-label"' + labelStyle + '>' + v.name + '</div></div>';
   });
 
   // photography.zip icon
   var zipTop = 20 + VIDEOS.length * 80;
-  html += '<div class="desktop-icon" style="left:20px;top:' + zipTop + 'px" ' +
-    'ondblclick="window.open(PHOTOGRAPHY_URL, \'_blank\')" ontouchend="event.preventDefault();window.open(PHOTOGRAPHY_URL, \'_blank\')">' +
+  html += '<div class="desktop-icon" id="dicon-zip" style="left:20px;top:' + zipTop + 'px" ' +
+    'onmousedown="startIconDrag(event, \'dicon-zip\', function(){window.open(PHOTOGRAPHY_URL, \'_blank\')})" ' +
+    'ontouchstart="startIconDragTouch(event, \'dicon-zip\', function(){window.open(PHOTOGRAPHY_URL, \'_blank\')})">' +
     '<div class="icon-wrap">' + zipSVG + '</div>' +
     '<div class="icon-label">photography.zip</div></div>';
 
@@ -353,12 +355,15 @@ function openVideo(videoId) {
     '<button class="win-btn close-btn" onclick="closeWindow(\'' + windowId + '\')" ontouchend="event.preventDefault();closeWindow(\'' + windowId + '\')">✕</button></div></div>' +
     '<div class="player-area"><video id="vid-' + videoId + '" src="' + video.url + '" playsinline webkit-playsinline style="max-width:100%;max-height:100%" ontimeupdate="updateProgress(\'' + videoId + '\')" onended="onVideoEnd(\'' + videoId + '\')"></video></div>' +
     '<div class="player-controls">' +
-    '<button class="win-btn" onclick="playVideo(\'' + videoId + '\')">▶</button>' +
-    '<button class="win-btn" onclick="pauseVideo(\'' + videoId + '\')">⏸</button>' +
-    '<button class="win-btn" onclick="stopVideo(\'' + videoId + '\')">⏹</button>' +
+    '<button class="win-btn" onmousedown="startRew(\'' + videoId + '\')" onmouseup="stopScrub(\'' + videoId + '\')" onmouseleave="stopScrub(\'' + videoId + '\')" ontouchstart="startRew(\'' + videoId + '\')" ontouchend="stopScrub(\'' + videoId + '\')"><svg width="14" height="14" viewBox="0 0 14 14"><polygon points="8,2 2,7 8,12" fill="black"/><polygon points="13,2 7,7 13,12" fill="black"/></svg></button>' +
+    '<button class="win-btn" id="ppBtn-' + videoId + '" onclick="togglePlay(\'' + videoId + '\')">▶</button>' +
+    '<button class="win-btn" onmousedown="startFF(\'' + videoId + '\')" onmouseup="stopScrub(\'' + videoId + '\')" onmouseleave="stopScrub(\'' + videoId + '\')" ontouchstart="startFF(\'' + videoId + '\')" ontouchend="stopScrub(\'' + videoId + '\')"><svg width="14" height="14" viewBox="0 0 14 14"><polygon points="1,2 7,7 1,12" fill="black"/><polygon points="6,2 12,7 6,12" fill="black"/></svg></button>' +
     '<div class="progress-track" id="track-' + videoId + '" onclick="seekVideo(event,\'' + videoId + '\')" ontouchstart="seekVideoTouch(event,\'' + videoId + '\')">' +
     '<div class="progress-fill" id="progress-' + videoId + '"></div></div>' +
     '<div class="time-display" id="time-' + videoId + '">0:00 / 0:00</div>' +
+    '<div style="position:relative"><button class="win-btn" onclick="toggleVolSlider(\'' + videoId + '\')" id="volBtn-' + videoId + '">🔊</button>' +
+    '<div id="volPopup-' + videoId + '" style="display:none;position:absolute;bottom:32px;left:50%;transform:translateX(-50%);background:#c0c0c0;border-top:2px solid #dfdfdf;border-left:2px solid #dfdfdf;border-right:2px solid #404040;border-bottom:2px solid #404040;padding:8px 6px;z-index:100;">' +
+    '<input type="range" min="0" max="100" value="100" id="volSlider-' + videoId + '" oninput="setVol(\'' + videoId + '\',this.value)" style="writing-mode:vertical-lr;direction:rtl;height:80px;width:20px;cursor:pointer;accent-color:#000080"></div></div>' +
     '<button class="win-btn" onclick="toggleFullscreen(\'' + videoId + '\')">⛶</button></div>' +
     '</div>';
 
@@ -377,9 +382,60 @@ function closeWindow(windowId) {
   updateTaskbar();
 }
 
-function playVideo(id) { var v = document.getElementById('vid-' + id); if (v) v.play(); }
-function pauseVideo(id) { var v = document.getElementById('vid-' + id); if (v) v.pause(); }
-function stopVideo(id) { var v = document.getElementById('vid-' + id); if (v) { v.pause(); v.currentTime = 0; } }
+function togglePlay(id) {
+  var v = document.getElementById('vid-' + id);
+  if (!v) return;
+  if (v.paused) { v.play(); } else { v.pause(); }
+  updatePlayBtn(id);
+}
+function updatePlayBtn(id) {
+  var v = document.getElementById('vid-' + id);
+  var btn = document.getElementById('ppBtn-' + id);
+  if (v && btn) btn.textContent = v.paused ? '▶' : '⏸';
+}
+
+var scrubTimers = {};
+function startFF(id) {
+  var v = document.getElementById('vid-' + id); if (!v) return;
+  v.pause();
+  scrubTimers[id] = setInterval(function() {
+    v.currentTime = Math.min(v.duration || 0, v.currentTime + 0.5);
+  }, 50);
+}
+function startRew(id) {
+  var v = document.getElementById('vid-' + id); if (!v) return;
+  v.pause();
+  scrubTimers[id] = setInterval(function() {
+    v.currentTime = Math.max(0, v.currentTime - 0.5);
+  }, 50);
+}
+function stopScrub(id) {
+  if (scrubTimers[id]) { clearInterval(scrubTimers[id]); delete scrubTimers[id]; }
+}
+
+function toggleVolSlider(id) {
+  var popup = document.getElementById('volPopup-' + id);
+  if (!popup) return;
+  popup.style.display = popup.style.display === 'none' ? 'block' : 'none';
+}
+function setVol(id, val) {
+  var v = document.getElementById('vid-' + id);
+  var btn = document.getElementById('volBtn-' + id);
+  if (!v) return;
+  v.volume = val / 100;
+  v.muted = false;
+  if (btn) btn.textContent = val == 0 ? '🔇' : val < 50 ? '🔉' : '🔊';
+}
+function toggleMute(id) {
+  var v = document.getElementById('vid-' + id);
+  var btn = document.getElementById('volBtn-' + id);
+  var slider = document.getElementById('volSlider-' + id);
+  if (!v) return;
+  v.muted = !v.muted;
+  if (btn) btn.textContent = v.muted ? '🔇' : '🔊';
+  if (slider) slider.value = v.muted ? 0 : v.volume * 100;
+}
+
 function toggleFullscreen(id) {
   var v = document.getElementById('vid-' + id);
   if (v) { if (v.requestFullscreen) v.requestFullscreen(); else if (v.webkitRequestFullscreen) v.webkitRequestFullscreen(); else if (v.webkitEnterFullscreen) v.webkitEnterFullscreen(); }
@@ -391,6 +447,7 @@ function updateProgress(id) {
   var t = document.getElementById('time-' + id);
   if (v && fill) fill.style.width = (v.duration ? (v.currentTime/v.duration)*100 : 0) + '%';
   if (v && t) t.textContent = formatTime(v.currentTime) + ' / ' + formatTime(v.duration);
+  updatePlayBtn(id);
 }
 function seekVideo(e, id) {
   var track = document.getElementById('track-' + id); var v = document.getElementById('vid-' + id);
@@ -403,7 +460,76 @@ function seekVideoTouch(e, id) {
 }
 function onVideoEnd(id) { var f = document.getElementById('progress-' + id); if (f) f.style.width = '100%'; }
 
-// Drag
+// Icon dragging
+var iconDrag = null;
+function startIconDrag(e, iconId, openFn) {
+  e.preventDefault();
+  closeStart();
+  var el = document.getElementById(iconId);
+  var rect = el.getBoundingClientRect();
+  iconDrag = { id: iconId, offsetX: e.clientX - rect.left, offsetY: e.clientY - rect.top, startX: e.clientX, startY: e.clientY, moved: false, openFn: openFn };
+}
+function startIconDragTouch(e, iconId, openFn) {
+  closeStart();
+  var touch = e.touches[0]; if (!touch) return;
+  var el = document.getElementById(iconId);
+  var rect = el.getBoundingClientRect();
+  iconDrag = { id: iconId, offsetX: touch.clientX - rect.left, offsetY: touch.clientY - rect.top, startX: touch.clientX, startY: touch.clientY, moved: false, isTouch: true, openFn: openFn, tapTime: Date.now() };
+}
+document.addEventListener('mousemove', function(e) {
+  if (!iconDrag || iconDrag.isTouch) return;
+  var dx = Math.abs(e.clientX - iconDrag.startX);
+  var dy = Math.abs(e.clientY - iconDrag.startY);
+  if (!iconDrag.moved && dx < 5 && dy < 5) return;
+  iconDrag.moved = true;
+  var el = document.getElementById(iconDrag.id);
+  if (el) { el.style.left = (e.clientX - iconDrag.offsetX) + 'px'; el.style.top = (e.clientY - iconDrag.offsetY) + 'px'; }
+});
+document.addEventListener('mouseup', function(e) {
+  if (!iconDrag || iconDrag.isTouch) return;
+  if (!iconDrag.moved) {
+    // Was a click — check for double click
+    var now = Date.now();
+    if (iconDrag._lastClick && now - iconDrag._lastClick < 400) {
+      iconDrag.openFn();
+    }
+    var el = document.getElementById(iconDrag.id);
+    if (el) el._lastClick = now;
+  }
+  // Transfer lastClick to next drag
+  var prevClick = document.getElementById(iconDrag.id);
+  if (prevClick) prevClick._lastClickTime = iconDrag.moved ? 0 : Date.now();
+  iconDrag = null;
+});
+// Override mousedown to read last click
+var _origStartIconDrag = startIconDrag;
+startIconDrag = function(e, iconId, openFn) {
+  _origStartIconDrag(e, iconId, openFn);
+  var el = document.getElementById(iconId);
+  if (el) iconDrag._lastClick = el._lastClickTime || 0;
+};
+
+document.addEventListener('touchmove', function(e) {
+  if (!iconDrag || !iconDrag.isTouch) return;
+  var touch = e.touches[0]; if (!touch) return;
+  var dx = Math.abs(touch.clientX - iconDrag.startX);
+  var dy = Math.abs(touch.clientY - iconDrag.startY);
+  if (!iconDrag.moved && dx < 8 && dy < 8) return;
+  iconDrag.moved = true;
+  e.preventDefault();
+  var el = document.getElementById(iconDrag.id);
+  if (el) { el.style.left = (touch.clientX - iconDrag.offsetX) + 'px'; el.style.top = (touch.clientY - iconDrag.offsetY) + 'px'; }
+}, { passive: false });
+document.addEventListener('touchend', function() {
+  if (!iconDrag || !iconDrag.isTouch) return;
+  if (!iconDrag.moved) {
+    // Single tap on mobile opens
+    iconDrag.openFn();
+  }
+  iconDrag = null;
+});
+
+// Window dragging
 var dragState = null;
 function startDrag(e, wid) {
   if (e.target.closest('button')) return;
