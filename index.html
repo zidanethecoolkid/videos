@@ -228,7 +228,7 @@
 <div id="start-menu" class="start-menu">
   <div class="sidebar"><span>ziduflicks</span></div>
   <div class="menu-items">
-    <div class="menu-item" onclick="window.open(PHOTOGRAPHY_URL, '_blank');closeStart();">📁 photography.zip</div>
+    <div class="menu-item" onclick="window.open(PHOTOGRAPHY_URL, '_blank');closeStart();">📁 dispos.zip</div>
     <div class="menu-item" id="docsMenuItem" onclick="toggleDocs()">📄 Documents ▸</div>
     <div id="docsSubmenu" style="display:none;">
       <div class="menu-item" style="padding-left:24px" onclick="openVideo('v1');closeStart();">🎬 centralceealbumteaserparty.mp4</div>
@@ -268,7 +268,7 @@ var VIDEOS = [
   { id: "v3", name: "sohosidequest.mp4", url: "https://res.cloudinary.com/dbuxi5yul/video/upload/v1773074506/OUTPUT_22_wnogyv.mp4" },
 ];
 
-// YOUR PHOTOGRAPHY SITE URL — where the photography.zip icon links to
+// YOUR PHOTOGRAPHY SITE URL — where the dispos.zip icon links to
 var PHOTOGRAPHY_URL = "https://dispos.zip";
 
 // =====================================================
@@ -308,13 +308,13 @@ function renderDesktop() {
       '<div class="icon-label"' + labelStyle + '>' + v.name + '</div></div>';
   });
 
-  // photography.zip icon
+  // dispos.zip icon
   var zipTop = 20 + VIDEOS.length * 80;
   html += '<div class="desktop-icon" id="dicon-zip" style="left:20px;top:' + zipTop + 'px" ' +
     'onmousedown="startIconDrag(event, \'dicon-zip\', function(){window.open(PHOTOGRAPHY_URL, \'_blank\')})" ' +
     'ontouchstart="startIconDragTouch(event, \'dicon-zip\', function(){window.open(PHOTOGRAPHY_URL, \'_blank\')})">' +
     '<div class="icon-wrap">' + zipSVG + '</div>' +
-    '<div class="icon-label">photography.zip</div></div>';
+    '<div class="icon-label">dispos.zip</div></div>';
 
   desktop.innerHTML = html;
 }
